@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swap Shelf - Coming Soon</title>
+  <style>
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body, html {
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden; /* Prevent scrolling */
+  position: relative;
+}
+
+/* 🎨 Animated Gradient Background */
+@keyframes backgroundAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+body {
+  background: linear-gradient(-45deg, #f39c12, #d35400, #e67e22, #ff5733);
+  background-size: 400% 400%;
+  animation: backgroundAnimation 10s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  padding: 20px;
+}
+
+/* 🎨 Floating Shapes Container */
+.floating-shapes {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1; /* Keep it behind content */
+}
+
+/* 🌟 Shape Styling */
+.shape {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.10); /* Semi-transparent */
+  border-radius: 50%; /* Makes it circular */
+  opacity: 0.6;
+  animation: floatShapes linear infinite;
+}
+
+/* Randomized Animation */
+@keyframes floatShapes {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(50vw, -50vh) scale(1.3);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50vw, 50vh) scale(1);
+    opacity: 0.3;
+  }
+}
+
+/* ✨ Fade-in Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+  max-width: 600px;
+  width: 100%;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+/* 🔥 Glow Effect on Title */
+h1 {
+  font-size: 3em;
+  margin-bottom: 0.2em;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+/* Fancy "Coming Soon" */
+.coming-soon {
+  font-size: 1.5em;
+  margin: 1em 0;
+  font-weight: bold;
+  animation: pulse 1.5s infinite alternate;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+  from { transform: scale(1); opacity: 0.8; }
+  to { transform: scale(1.1); opacity: 1; }
+}
+
+/* 🚀 Subscription Form */
+.subscribe-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.subscribe-form input[type="email"] {
+  padding: 10px;
+  width: 100%;
+  max-width: 300px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 1em;
+}
+
+/* 🚀 Button Animation */
+.subscribe-form button {
+  padding: 10px 20px;
+  background-color: #fff;
+  color: #d35400;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Hover Effect */
+.subscribe-form button:hover {
+  background-color: #f1f1f1;
+  transform: scale(1.1);
+}
+
+/* Success Message Fade-in */
+.success-message {
+  margin-top: 10px;
+  font-size: 1em;
+  color: #ffffff;
+  font-weight: bold;
+  display: none;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Floating Footer */
+footer {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  font-size: 0.8em;
+  color: #f1f1f1;
+}
+
+/* 🔄 Loader Overlay */
+#loader-overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8); /* Dark semi-transparent overlay */
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  visibility: hidden; /* Hidden by default */
+  opacity: 0;
+  transition: visibility 0.3s, opacity 0.3s ease;
+}
+
+/* 🔄 Animated Loader (Spinning Circle) */
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #fff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Loader Animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ✅ Success Checkmark */
+.success-checkmark {
+  display: none; /* Hidden until success */
+  width: 80px;
+  height: 80px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* SVG Checkmark */
+.success-checkmark svg {
+  width: 60px;
+  height: 60px;
+  stroke: #28a745; /* Green color */
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  animation: drawCheck 0.5s ease-out forwards;
+}
+
+/* Checkmark Circle */
+.checkmark-circle {
+  stroke: #28a745;
+  stroke-width: 5;
+  stroke-dasharray: 157;
+  stroke-dashoffset: 157;
+  animation: drawCircle 0.5s ease-out forwards;
+}
+
+/* Checkmark Path */
+.checkmark {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: drawCheck 0.5s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+/* ✅ Checkmark Animation */
+@keyframes drawCircle {
+  from { stroke-dashoffset: 157; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes drawCheck {
+  from { stroke-dashoffset: 50; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* ✨ Fade-in Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
+  </style>
+</head>
+<body>
+<!-- Floating Shapes Background -->
+<div class="floating-shapes"></div>
+
+
+  <div class="container">
+    <h1>Swap Shelf</h1>
+    <p>Your ultimate book exchange platform.</p>
+    <p class="coming-soon">Coming Soon</p>
+    
+    <!-- Updated Subscription Form -->
+    <form class="subscribe-form" id="emailForm">
+      <input type="email" id="emailInput" placeholder="Enter your email" required>
+      <button type="submit">Notify Me</button>
+      <p class="success-message" id="successMessage">Thank you! You'll be notified soon.</p>
+    </form>
+  </div>
+  
+  <!-- Loader Overlay -->
+	<div id="loader-overlay">
+	  <div class="loader"></div>
+	  <div class="success-checkmark">
+		<svg viewBox="0 0 52 52">
+		  <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+		  <path class="checkmark" fill="none" d="M14 27l7 7 16-16"/>
+		</svg>
+	  </div>
+	</div>
+
+  
+  <footer>
+    &copy; 2025 Swap Shelf. All rights reserved.
+  </footer>
+
+  <script>
+  
+  document.getElementById("emailForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    
+    var email = document.getElementById("emailInput").value;
+    var successMessage = document.getElementById("successMessage");
+    var loaderOverlay = document.getElementById("loader-overlay");
+    var loader = document.querySelector(".loader");
+    var checkmark = document.querySelector(".success-checkmark");
+	
+	        // Validate email format
+        if (!email.includes("@") || !email.includes(".")) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+
+        // Prevent duplicate submissions
+        if (localStorage.getItem(email)) {
+            alert("You are already subscribed!");
+            return;
+        }
+
+    // Show loading overlay
+    loaderOverlay.style.visibility = "visible";
+    loaderOverlay.style.opacity = "1";
+    loader.style.display = "block";
+    checkmark.style.display = "none"; // Hide checkmark initially
+
+    fetch("https://script.google.com/macros/s/AKfycbyajUgE3ZR0ETLBObr4h-DLJjQQKhgwGpVvJzTZHyQJlYp1kfWZ9Ul1XmTijSuIMlWQ/exec", {
+	redirect: "follow",
+        method: "POST",
+        body: JSON.stringify({ email: email }),
+        headers: { "Content-Type": "text/plain;charset=utf-8" }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "Success") {
+            // Show checkmark and hide loader
+            loader.style.display = "none";
+            checkmark.style.display = "flex";
+
+            // Hide overlay after 2 seconds
+            setTimeout(() => {
+                loaderOverlay.style.opacity = "0";
+                setTimeout(() => {
+                    loaderOverlay.style.visibility = "hidden";
+                }, 300); // Allow fade out
+            }, 2000);
+
+			localStorage.setItem(email, "subscribed");
+            successMessage.style.display = "block";
+            document.getElementById("emailInput").value = ""; // Clear input field
+        } else {
+            alert("Something went wrong. Try again!");
+            loaderOverlay.style.visibility = "hidden"; // Hide loader
+            loaderOverlay.style.opacity = "0";
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Error submitting email. Please try again.");
+        loaderOverlay.style.visibility = "hidden"; // Hide loader
+        loaderOverlay.style.opacity = "0";
+    });
+});
+	
+	  function createFloatingShapes() {
+      const shapeContainer = document.querySelector(".floating-shapes");
+      
+      for (let i = 0; i < 80; i++) {  // Creates 20 floating shapes
+          let shape = document.createElement("div");
+          shape.classList.add("shape");
+          
+          // Random position across the screen
+          shape.style.left = `${Math.random() * 100}vw`;
+          shape.style.top = `${Math.random() * 100}vh`;
+          
+          // Random animation duration (each shape moves at a different speed)
+          let duration = Math.random() * 10 + 5; // Between 5s to 15s
+          shape.style.animationDuration = `${duration}s`;
+          
+          // Random size variation
+          let size = Math.random() * 30 + 20; // Between 20px to 50px
+          shape.style.width = `${size}px`;
+          shape.style.height = `${size}px`; // Keep it circular
+
+          // Append shape to container
+          shapeContainer.appendChild(shape);
+      }
+  }
+
+  // Run function after page loads
+  document.addEventListener("DOMContentLoaded", createFloatingShapes);
+  </script>
+</body>
+</html>
